@@ -109,8 +109,8 @@ const reauthenticate = async (currentPassword) => {
                     <div className='text-center'>
                         <img 
                             src={currentUser.Photo}
-                            className='rounded-circle w-40'
                             alt=''
+                            style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                         />
                     </div>
                     <h1 className="text-center mb-2">Hi ,{currentUser.displayName }</h1>

@@ -34,13 +34,23 @@ const ViewProfile = () => {
       <Card>
         <Card.Body>
           <h6 
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             style={{ cursor: 'pointer' }}
           >
             &lt; back
           </h6>
           <h1 className="text-center mb-4">Profile</h1>
           <Form>
+            <Form.Group id="Profile">
+              <div className="mt-2 mb-2 text-center">
+                <img
+                  src={currentUser.Photo}
+                  value={currentUser.Photo}
+                  alt="Profile Preview"
+                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                />
+              </div>
+            </Form.Group>
             <Form.Group id="Firstname">
               <Form.Label>Firstname</Form.Label>
               <Form.Control
@@ -88,7 +98,7 @@ const ViewProfile = () => {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-3">
-        <Button onClick={handleUpdateProfile}>Update Profile</Button>
+        <Button onClick={handleUpdateProfile}>Edit Profile</Button>
       </div>
       
     </>

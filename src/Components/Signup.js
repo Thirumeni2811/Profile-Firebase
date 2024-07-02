@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../firebase';
 import { setDoc, doc } from 'firebase/firestore'; 
 import { toast } from 'react-toastify';
-
+import ProfilePic from '../ProfilePic.png'
 const Signup = () => {
   const [Firstname, setFirstname] = useState("");
   const [Lastname, setLastname] = useState("");
@@ -39,7 +39,7 @@ const Signup = () => {
           DateofBirth: DateofBirth,
           Phoneno: Phoneno,
           displayName: `${Firstname} ${Lastname}`,
-          Photo: user.photoURL || ""
+          Photo: user.photoURL || ProfilePic
         });
         toast.success("Successfully Registered!!", {
           position: "top-center"
@@ -61,14 +61,24 @@ const Signup = () => {
         <Card.Body>
           <h1 className="text-center mb-4">Sign Up</h1>
           <Form onSubmit={handleSubmit}>
-          <Form.Group id="Email">
+            <Form.Group id="Profile">
+              <div className="mt-2 mb-2 text-center">
+                <img
+                  src={ProfilePic}
+                  value={ProfilePic}
+                  alt="Profile Preview"
+                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group id="Email">
               <Form.Label>Email</Form.Label>
               <Form.Control 
                 type="email" 
                 value={Email}
                 onChange={(e) => setEmail(e.target.value)} 
                 required
-              />            
+              />          
             </Form.Group>
             <Form.Group id="Firstname">
               <Form.Label>Firstname</Form.Label>
@@ -96,7 +106,7 @@ const Signup = () => {
                 onChange={(e) => setDateofBirth(e.target.value)} 
                 required
               />           
-             </Form.Group>
+            </Form.Group>
             <Form.Group id="Phoneno">
               <Form.Label>Phone number</Form.Label>
               <Form.Control 
