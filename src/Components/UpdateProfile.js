@@ -210,9 +210,9 @@ const UpdateProfile = () => {
                     onChange={(e) => setCountryCode(e.target.value)} 
                     required
                   >
+                    <option value="+91">+91 (India)</option>
                     <option value="+1">+1 (USA)</option>
                     <option value="+44">+44 (UK)</option>
-                    <option value="+91">+91 (India)</option>
                     <option value="+81">+81 (Japan)</option>
                     <option value="+61">+61 (Australia)</option>
                   </Form.Control>
