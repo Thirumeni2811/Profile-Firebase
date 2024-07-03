@@ -11,12 +11,14 @@ const UpdateProfile = () => {
   const [Firstname, setFirstname] = useState("");
   const [Lastname, setLastname] = useState("");
   const [DateofBirth, setDateofBirth] = useState("");
+  const [CountryCode, setCountryCode] = useState("+91")
   const [Phoneno, setPhoneNo] = useState("");
   const [Email, setEmail] = useState("");
   const [Photo, setPhoto] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const currentDate = new Date().toISOString().split('T')[0]
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -39,6 +41,7 @@ const UpdateProfile = () => {
           setFirstname(userData.Firstname || '');
           setLastname(userData.Lastname || '');
           setDateofBirth(userData.DateofBirth || '');
+          setCountryCode(userData.CountryCode || '');
           setPhoneNo(userData.Phoneno || '');
           setPhoto(userData.Photo || '');
         } else {
@@ -52,6 +55,44 @@ const UpdateProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    //check the valid mobile number
+    let isValidPhone = false;
+    switch (CountryCode) {
+      case "+1": // USA
+        isValidPhone = /^\(\d{3}\) \d{3}-\d{4}$/.test(Phoneno);
+        break;
+      case "+44": // UK
+        isValidPhone = /^(?:\d{5}|\d{4} \d{6}|\d{5} \d{5}|\d{4} \d{4} \d{2})$/.test(Phoneno);
+        break;
+      case "+91": // India
+        isValidPhone = /^[6-9]\d{9}$/.test(Phoneno);
+        break;
+      case "+81": // Japan
+        isValidPhone = /^\d{3}-\d{4}-\d{4}$/.test(Phoneno);
+        break;
+      case "+61": // Australia
+        isValidPhone = /^(\(0[2-9]\)|0[2-9])\d{8}$/.test(Phoneno);
+        break;
+      default:
+        break;
+    }
+
+    if (!isValidPhone) {
+      toast.error("Please enter a valid phone number for the selected country", {
+        position: "bottom-center"
+      });
+      return;
+    }
+
+    //check it all required fields are filled
+    if (!Firstname || !Lastname || !DateofBirth || !Phoneno) {
+      toast.error("Please fill in all required fields", {
+        position: "bottom-center"
+      });
+      return;
+    }
+
   
     try {
       setLoading(true);
@@ -72,6 +113,7 @@ const UpdateProfile = () => {
           Firstname: Firstname,
           Lastname: Lastname,
           DateofBirth: DateofBirth,
+          CountryCode: CountryCode ,
           Phoneno: Phoneno,
           displayName: `${Firstname} ${Lastname}`,
           Photo: photoURL
@@ -109,7 +151,7 @@ const UpdateProfile = () => {
                 <img
                   src={Photo}
                   value={Photo}
-                  alt="Profile Preview"
+                  alt="Loading..."
                   style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                 />
               </div>
@@ -154,18 +196,35 @@ const UpdateProfile = () => {
                 type="date"
                 value={DateofBirth}
                 onChange={(e) => setDateofBirth(e.target.value)}
+                max={currentDate}
                 required
               />
             </Form.Group>
             <Form.Group id="Phoneno">
-              <Form.Label>Phone number</Form.Label>
-              <Form.Control
-                type="text"
-                value={Phoneno}
-                onChange={(e) => setPhoneNo(e.target.value)}
-                required
-              />
-            </Form.Group>
+                <Form.Label>Phone number</Form.Label>
+                <div className='d-flex gap-2'>
+                  <Form.Control 
+                    style={{width: "130px" , cursor: "pointer"}}
+                    as="select" 
+                    value={CountryCode}
+                    onChange={(e) => setCountryCode(e.target.value)} 
+                    required
+                  >
+                    <option value="+1">+1 (USA)</option>
+                    <option value="+44">+44 (UK)</option>
+                    <option value="+91">+91 (India)</option>
+                    <option value="+81">+81 (Japan)</option>
+                    <option value="+61">+61 (Australia)</option>
+                  </Form.Control>
+                  <Form.Control 
+                    type="text" 
+                    value={Phoneno}
+                    onChange={(e) => setPhoneNo(e.target.value)} 
+                    required
+                    placeholder="Phone number"
+                  />
+                </div>
+              </Form.Group>
           </Form>
         </Card.Body>
       </Card>

@@ -7,7 +7,6 @@ import { db, auth } from '../firebase';
 const ViewProfile = () => {
   const [currentUser, setCurrentUser] = useState("");
   const navigate = useNavigate();
-
   useEffect(() => {
     const fetchUserData = async () => {
       const user = auth.currentUser;
@@ -46,7 +45,7 @@ const ViewProfile = () => {
                 <img
                   src={currentUser.Photo}
                   value={currentUser.Photo}
-                  alt="Profile Preview"
+                  alt="Loading..."
                   style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                 />
               </div>
@@ -77,11 +76,18 @@ const ViewProfile = () => {
             </Form.Group>
             <Form.Group id="Phoneno">
               <Form.Label>Phone number</Form.Label>
-              <Form.Control
-                type="text"
-                value={currentUser.Phoneno || ""}
-                readOnly 
-              />
+              <div className='d-flex gap-2'>
+                <Form.Control 
+                  style={{width: "50px" , cursor: "pointer"}}
+                  value={currentUser.CountryCode || ""}
+                  readOnly
+                />
+                <Form.Control
+                  type="text"
+                  value={currentUser.Phoneno || ""}
+                  readOnly 
+                />
+              </div>
             </Form.Group>
             <Form.Group id="Email">
               <Form.Label>Email</Form.Label>

@@ -25,9 +25,12 @@ const ForgotPassword = () => {
         }
       ); 
     }catch(error){
+      toast.error("Failed to send reset email: " + error.message, {
+        position: "bottom-center"
+      });
       console.log(error.message)
     }finally{
-      setLoading(true)
+      setLoading(false)
     }
 
   }
