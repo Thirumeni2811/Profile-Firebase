@@ -113,7 +113,11 @@ const reauthenticate = async (currentPassword) => {
                             style={{ width: '100px', height: '100px', borderRadius: '50%' }}
                         />
                     </div>
-                    <h1 className="text-center mb-2">Hi ,{currentUser.displayName }</h1>
+                    <h1 className="text-center mb-2"                   
+                      style={{ textTransform: 'capitalize' }}
+                    >
+                      Hi ,{currentUser.displayName }
+                    </h1>
                     <p className="text-center mb-2">{currentUser.Email}</p>
                     <Link to="/view-profile" className="btn btn-primary w-100 mt-3">View Profile</Link>
                 </Card.Body>

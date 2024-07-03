@@ -55,6 +55,7 @@ const ViewProfile = () => {
               <Form.Control
                 type="text"
                 value={currentUser.Firstname || ""}
+                style={{ textTransform: 'capitalize' }}
                 readOnly 
               />
             </Form.Group>
@@ -62,6 +63,7 @@ const ViewProfile = () => {
               <Form.Label>Lastname</Form.Label>
               <Form.Control
                 type="text"
+                style={{ textTransform: 'capitalize' }}
                 value={currentUser.Lastname || ""}
                 readOnly 
               />
@@ -78,7 +80,7 @@ const ViewProfile = () => {
               <Form.Label>Phone number</Form.Label>
               <div className='d-flex gap-2'>
                 <Form.Control 
-                  style={{width: "50px" , cursor: "pointer"}}
+                  style={{width: "60px" , cursor: "pointer"}}
                   value={currentUser.CountryCode || ""}
                   readOnly
                 />

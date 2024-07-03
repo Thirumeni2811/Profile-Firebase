@@ -177,6 +177,7 @@ const UpdateProfile = () => {
               <Form.Control
                 type="text"
                 value={Firstname}
+                style={{ textTransform: 'capitalize' }}
                 onChange={(e) => setFirstname(e.target.value)}
                 required
               />
@@ -186,6 +187,7 @@ const UpdateProfile = () => {
               <Form.Control
                 type="text"
                 value={Lastname}
+                style={{ textTransform: 'capitalize' }}
                 onChange={(e) => setLastname(e.target.value)}
                 required
               />
