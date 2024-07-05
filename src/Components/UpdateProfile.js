@@ -6,19 +6,20 @@ import { db, auth, storage } from '../firebase';
 import { toast } from 'react-toastify';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { v4 } from 'uuid';
+import Loading from '../Loading.svg';
 
 const UpdateProfile = () => {
   const [Firstname, setFirstname] = useState("");
   const [Lastname, setLastname] = useState("");
   const [DateofBirth, setDateofBirth] = useState("");
-  const [CountryCode, setCountryCode] = useState("+91")
+  const [CountryCode, setCountryCode] = useState("")
   const [Phoneno, setPhoneNo] = useState("");
   const [Email, setEmail] = useState("");
   const [Photo, setPhoto] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const currentDate = new Date().toISOString().split('T')[0]
+  const currentDate = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -37,13 +38,13 @@ const UpdateProfile = () => {
         const docRef = doc(db, 'User', user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          const userData = docSnap.data();
-          setFirstname(userData.Firstname || '');
-          setLastname(userData.Lastname || '');
-          setDateofBirth(userData.DateofBirth || '');
-          setCountryCode(userData.CountryCode || '');
-          setPhoneNo(userData.Phoneno || '');
-          setPhoto(userData.Photo || '');
+          const { Firstname, Lastname, DateofBirth, CountryCode, Phoneno, Photo } = docSnap.data();
+          setFirstname(Firstname || '');
+          setLastname(Lastname || '');
+          setDateofBirth(DateofBirth || '');
+          setCountryCode(CountryCode || '');
+          setPhoneNo(Phoneno || '');
+          setPhoto(Photo || '');
         } else {
           console.log('No such document!');
         }
@@ -56,7 +57,7 @@ const UpdateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    //check the valid mobile number
+    // Check the valid mobile number
     let isValidPhone = false;
     switch (CountryCode) {
       case "+1": // USA
@@ -85,7 +86,7 @@ const UpdateProfile = () => {
       return;
     }
 
-    //check it all required fields are filled
+    // Check if all required fields are filled
     if (!Firstname || !Lastname || !DateofBirth || !Phoneno) {
       toast.error("Please fill in all required fields", {
         position: "bottom-center"
@@ -93,7 +94,6 @@ const UpdateProfile = () => {
       return;
     }
 
-  
     try {
       setLoading(true);
       const user = auth.currentUser;
@@ -106,19 +106,19 @@ const UpdateProfile = () => {
         } else {
           photoURL = Photo;
         }
-  
+
         // Update Firestore document
         await setDoc(doc(db, "User", user.uid), {
           Email: Email,
           Firstname: Firstname,
           Lastname: Lastname,
           DateofBirth: DateofBirth,
-          CountryCode: CountryCode ,
+          CountryCode: CountryCode,
           Phoneno: Phoneno,
           displayName: `${Firstname} ${Lastname}`,
           Photo: photoURL
         });
-  
+
         toast.success("Successfully Updated!!", {
           position: "top-center"
         });
@@ -132,108 +132,129 @@ const UpdateProfile = () => {
       setLoading(false);
     }
   };
-  
 
   return (
-    <>
-      <Card>
-        <Card.Body>
-          <h6 
-            onClick={() => navigate('/view-profile')}
-            style={{ cursor: 'pointer' }}
-          >
-            &lt; back
-          </h6>
-          <h1 className="text-center mb-4">Update Profile</h1>
-          <Form>
-            <Form.Group id="Profile">
-              <div className="mt-2 mb-2 text-center">
-                <img
-                  src={Photo}
-                  value={Photo}
-                  alt="Loading..."
-                  style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-                />
-              </div>
-            </Form.Group>
-            <p className='text-center fs-6 fw-2'>Do you want to change your Profile picture?</p>
-            <Form.Group id="ProfileImage">
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={(e) => setPhoto(e.target.files[0])}
-              />
-            </Form.Group>
-            <Form.Group id="Email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={currentUser.Email || ""}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group id="Firstname">
-              <Form.Label>Firstname</Form.Label>
-              <Form.Control
-                type="text"
-                value={Firstname}
-                style={{ textTransform: 'capitalize' }}
-                onChange={(e) => setFirstname(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Form.Group id="Lastname">
-              <Form.Label>Lastname</Form.Label>
-              <Form.Control
-                type="text"
-                value={Lastname}
-                style={{ textTransform: 'capitalize' }}
-                onChange={(e) => setLastname(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Form.Group id="DateofBirth">
-              <Form.Label>Date of Birth</Form.Label>
-              <Form.Control
-                type="date"
-                value={DateofBirth}
-                onChange={(e) => setDateofBirth(e.target.value)}
-                max={currentDate}
-                required
-              />
-            </Form.Group>
-            <Form.Group id="Phoneno">
-                <Form.Label>Phone number</Form.Label>
-                <div className='d-flex gap-2'>
-                  <Form.Control 
-                    style={{width: "130px" , cursor: "pointer"}}
-                    as="select" 
-                    value={CountryCode}
-                    onChange={(e) => setCountryCode(e.target.value)} 
-                    required
-                  >
-                    <option value="+91">+91 (India)</option>
-                    <option value="+1">+1 (USA)</option>
-                    <option value="+44">+44 (UK)</option>
-                    <option value="+81">+81 (Japan)</option>
-                    <option value="+61">+61 (Australia)</option>
-                  </Form.Control>
-                  <Form.Control 
-                    type="text" 
-                    value={Phoneno}
-                    onChange={(e) => setPhoneNo(e.target.value)} 
-                    required
-                    placeholder="Phone number"
-                  />
+    <div>
+      {currentUser ? (
+        <>
+          <Card>
+            <Card.Body>
+              <h6 
+                onClick={() => navigate('/view-profile')}
+                style={{ cursor: 'pointer' }}
+              >
+                &lt; back
+              </h6>
+              <h1 className="text-center mb-4">Update Profile</h1>
+              <Form>
+                <Form.Group id="Profile">
+                <div className="mt-2 mb-2 text-center">
+                  {Photo ? (
+                    <img
+                      src={typeof Photo === 'string' ? Photo : URL.createObjectURL(Photo)}
+                      alt="User Profile"
+                      style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                    />
+                  ) : (
+                    <img
+                      src={Loading}
+                      alt="Loading..."
+                      style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+                    />
+                  )}
                 </div>
-              </Form.Group>
-          </Form>
-        </Card.Body>
-      </Card>
-      <div className="w-100 text-center mt-3">
-        <Button type="submit" disabled={loading} onClick={handleSubmit}>Update</Button>
-      </div>
-    </>
+                </Form.Group>
+                <p className='text-center fs-6 fw-2'>Do you want to change your Profile picture?</p>
+                <Form.Group id="ProfileImage">
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                  />
+                </Form.Group>
+
+                <Form.Group id="Email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={Email}
+                    readOnly
+                  />
+                </Form.Group>
+                <Form.Group id="Firstname">
+                  <Form.Label>Firstname</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={Firstname}
+                    style={{ textTransform: 'capitalize' }}
+                    onChange={(e) => setFirstname(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group id="Lastname">
+                  <Form.Label>Lastname</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={Lastname}
+                    style={{ textTransform: 'capitalize' }}
+                    onChange={(e) => setLastname(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group id="DateofBirth">
+                  <Form.Label>Date of Birth</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={DateofBirth}
+                    onChange={(e) => setDateofBirth(e.target.value)}
+                    max={currentDate}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group id="Phoneno">
+                  <Form.Label>Phone number</Form.Label>
+                  <div className='d-flex gap-2'>
+                    <Form.Control 
+                      style={{ width: "130px", cursor: "pointer" }}
+                      as="select" 
+                      value={CountryCode}
+                      onChange={(e) => setCountryCode(e.target.value)} 
+                      required
+                    >
+                      <option value="+91">+91 (India)</option>
+                      <option value="+1">+1 (USA)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <option value="+81">+81 (Japan)</option>
+                      <option value="+61">+61 (Australia)</option>
+                    </Form.Control>
+                    <Form.Control 
+                      type="text" 
+                      value={Phoneno}
+                      onChange={(e) => setPhoneNo(e.target.value)} 
+                      required
+                      placeholder="Phone number"
+                    />
+                  </div>
+                </Form.Group>
+              </Form>
+            </Card.Body>
+          </Card>
+          <div className="w-100 text-center mt-3">
+            <Button type="submit" disabled={loading} onClick={handleSubmit}>Update</Button>
+          </div>
+        </>
+      ) : (
+        <Card style={{ backgroundColor: 'transparent', border: 'none' }}>
+          <Card.Body style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
+            <img 
+              src={Loading} 
+              alt='Loading...'
+              style={{ width: '100px' }}
+            />
+          </Card.Body>
+        </Card>
+      )}
+    </div>
   );
 };
 
