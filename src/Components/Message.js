@@ -21,7 +21,7 @@ const Message = () => {
                 toast.success("Message sent successfully", {
                     position: 'top-center'
                 });
-                navigate("/")
+                navigate("/"); // Navigate after the email is sent successfully
             }, (error) => {
                 console.log('FAILED...', error.text);
                 toast.error(`FAILED: ${error.text}`, {
@@ -60,7 +60,16 @@ const Message = () => {
                         </h6>
                         <h1 className="text-center mb-4">Message</h1>
                         <Form ref={form} onSubmit={sendEmail}>
-                            <Form.Group id="Firstname">
+                            <Form.Group id="from_name">
+                                <Form.Label>From Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="from_name"
+                                    value="Admin"
+                                    readOnly
+                                />
+                            </Form.Group>
+                            <Form.Group id="name">
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     type="text"
@@ -70,23 +79,23 @@ const Message = () => {
                                     readOnly
                                 />
                             </Form.Group>
-                            <Form.Group id="Email">
+                            <Form.Group id="email">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     type="email"
                                     name="email"
-                                    value={currentUser.Email || ""}
+                                    value={currentUser.email || ""}
                                     readOnly
                                 />
                             </Form.Group>
-                            <Form.Group id="Subject">
+                            <Form.Group id="subject">
                                 <Form.Label>Subject</Form.Label>
                                 <Form.Control
                                     type="text"
                                     name="subject"
                                 />
                             </Form.Group>
-                            <Form.Group id="Message">
+                            <Form.Group id="message">
                                 <Form.Label>Message</Form.Label>
                                 <Form.Control
                                     as="textarea"
