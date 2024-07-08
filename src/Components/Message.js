@@ -12,23 +12,6 @@ const Message = () => {
     const navigate = useNavigate();
     const form = useRef();
 
-    const sendEmail = (e) => {
-        e.preventDefault();
-    
-        emailjs.sendForm('service_i3cr4h4', 'template_vx0ci07', form.current, 'GKdZp4bEf5pU6VOOp')
-            .then(() => {
-                console.log('SUCCESS!');
-                toast.success("Message sent successfully", {
-                    position: 'top-center'
-                });
-                navigate("/")
-            }, (error) => {
-                console.log('FAILED...', error.text);
-                toast.error(`FAILED: ${error.text}`, {
-                    position: 'bottom-center'
-                });
-            });
-    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -46,6 +29,23 @@ const Message = () => {
   
         fetchUserData();
     }, []);
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+    
+        emailjs.sendForm('service_i3cr4h4', 'template_vx0ci07', form.current, 'GKdZp4bEf5pU6VOOp')
+            .then(() => {
+                console.log('SUCCESS!');
+                toast.success("Message sent successfully", {
+                    position: 'top-center'
+                });
+            }, (error) => {
+                console.log('FAILED...', error.text);
+                toast.error(`FAILED: ${error.text}`, {
+                    position: 'bottom-center'
+                });
+            });
+    };
 
     return (
         <div>
@@ -65,9 +65,8 @@ const Message = () => {
                                 <Form.Control
                                     type="text"
                                     name="name"
-                                    value={currentUser.displayName || ""}
+                                    placeholder={currentUser.displayName || ""}
                                     style={{ textTransform: 'capitalize' }}
-                                    readOnly
                                 />
                             </Form.Group>
                             <Form.Group id="Email">
@@ -75,8 +74,7 @@ const Message = () => {
                                 <Form.Control
                                     type="email"
                                     name="email"
-                                    value={currentUser.Email || ""}
-                                    readOnly
+                                    placeholder={currentUser.Email || ""}
                                 />
                             </Form.Group>
                             <Form.Group id="Subject">
