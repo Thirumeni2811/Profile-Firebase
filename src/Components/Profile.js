@@ -116,6 +116,7 @@ const Profile = () => {
                             </h1>
                             <p className="text-center mb-2">{currentUser.Email}</p>
                             <Link to="/view-profile" className="btn btn-primary w-100 mt-3">View Profile</Link>
+                            <Link to="/message" className="btn btn-primary w-100 mt-3">Message</Link>
                         </Card.Body>
                     </Card>
                     {loading ? (

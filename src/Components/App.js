@@ -8,6 +8,7 @@ import Profile from "./Profile";
 import ForgotPassword from "./ForgotPassword";
 import ViewProfile from "./ViewProfile";
 import UpdateProfile from "./UpdateProfile";
+import Message from "./Message";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/" element={<Profile />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/message" element={<Message />}/>
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/view-profile" element={<ViewProfile />} />
                 <Route path="update-profile" element={<UpdateProfile />} />
