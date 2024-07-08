@@ -65,8 +65,9 @@ const Message = () => {
                                 <Form.Control
                                     type="text"
                                     name="name"
-                                    placeholder={currentUser.displayName || ""}
+                                    value={currentUser.displayName || ""}
                                     style={{ textTransform: 'capitalize' }}
+                                    required
                                 />
                             </Form.Group>
                             <Form.Group id="Email">
@@ -74,7 +75,8 @@ const Message = () => {
                                 <Form.Control
                                     type="email"
                                     name="email"
-                                    placeholder={currentUser.Email || ""}
+                                    value={currentUser.Email || ""}
+                                    required
                                 />
                             </Form.Group>
                             <Form.Group id="Subject">
@@ -82,6 +84,7 @@ const Message = () => {
                                 <Form.Control
                                     type="text"
                                     name="subject"
+                                    required
                                 />
                             </Form.Group>
                             <Form.Group id="Message">
@@ -90,6 +93,7 @@ const Message = () => {
                                     as="textarea"
                                     rows={3}
                                     name="message"
+                                    required
                                 />
                             </Form.Group>
                             <Button className="btn btn-primary w-100 mt-3" type="submit">Send Message</Button>
