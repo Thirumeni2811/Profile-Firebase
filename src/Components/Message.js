@@ -21,6 +21,7 @@ const Message = () => {
                 toast.success("Message sent successfully", {
                     position: 'top-center'
                 });
+                navigate("/")
             }, (error) => {
                 console.log('FAILED...', error.text);
                 toast.error(`FAILED: ${error.text}`, {
