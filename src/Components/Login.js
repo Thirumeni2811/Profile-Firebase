@@ -116,7 +116,7 @@ const Login = () => {
     <div>
       {navigate ? (
         <>
-          <Tabs defaultActiveKey="phone" id="justify-tab-example" className="mb-3" justify>
+          <Tabs defaultActiveKey="google" id="justify-tab-example" className="mb-3" justify>
             <Tab eventKey="google" title="Google">
               <Card>
                 <Card.Body>
